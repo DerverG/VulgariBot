@@ -1,4 +1,4 @@
-const { Client, Events, GatewayIntentBits, Collection } = require('discord.js');
+const { Client, Events, GatewayIntentBits, Collection, ActivityType  } = require('discord.js');
 const path = require('path')
 const fs = require('fs')
 
@@ -32,6 +32,16 @@ fs.readdirSync(prefixPath).forEach(file => {
 
 client.on(Events.ClientReady, readyClient => {
     console.log(`Logged in as ${readyClient.user.tag}!`);
+
+    readyClient.user.setPresence({
+        activities: [
+            {
+                name: 'tus modales.', // Displayed activity name
+                type: ActivityType.Watching // 'Competing', 'Custom', 'Listening', 'Playing', 'Streaming', 'Watching'
+            }
+        ],
+        status: 'online' // 'online', 'idle', 'dnd', 'invisible'
+    })
 })
 
 // Slash command handler
