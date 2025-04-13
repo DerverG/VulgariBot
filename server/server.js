@@ -1,3 +1,4 @@
+const databaseConfig = require('./config/database');
 const express = require('express')
 const mongoose = require('mongoose')
 const cors =  require('cors')
@@ -17,12 +18,7 @@ app.use(cors(
 app.use(express.json())
 
 // MongoDB Connection
-try {
-    mongoose.connect(process.env.MONGO_URI, {})
-    console.log('Conectado a la Base de Datos')
-} catch (err) {
-    console.error(err, 'Error al conectarse a la Base de Datos')
-}
+databaseConfig()
 
 // Import Routes
 

@@ -77,6 +77,4 @@ client.on(Events.MessageCreate, message => {
     }
 })
 
-module.exports = {
-    client
-}
+module.exports = client
