@@ -32,8 +32,13 @@ client.login(process.env.DISCORD_TOKEN)
 databaseConfig()
 
 // Import Routes
+const wordRoutes = require('./routes/wordRoutes')
+// const serverRoutes = require('./routes/serverRoutes')
 
 // Routes
+app.use('/api/words', wordRoutes)
+// app.use('/api/servers', serverRoutes)
+
 
 const SERVER_PORT = process.env.SERVER_PORT
 
