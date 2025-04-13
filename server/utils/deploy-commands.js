@@ -1,4 +1,3 @@
-// Codigo para probar Slash Commands de Discord (modo guild/test)
 const { REST, Routes } = require('discord.js')
 const fs = require('fs')
 const path = require('path')
@@ -18,11 +17,11 @@ for (const file of commandFiles) {
     }
 }
 
-const rest = new REST({ version: '10' }).setToken(process.env.TOKEN)
+const rest = new REST({ version: '10' }).setToken(process.env.DISCORD_TOKEN)
 
 rest.put(
-    Routes.applicationGuildCommands(process.env.CLIENT_ID, process.env.GUILD_ID),
+    Routes.applicationCommands(process.env.DISCORD_CLIENT_ID),
     { body: commands }
 )
-    .then(() => console.log('✅ Comandos de prueba registrados correctamente en el servidor.'))
+    .then(() => console.log('✅ Comandos globales registrados correctamente.'))
     .catch(console.error)
