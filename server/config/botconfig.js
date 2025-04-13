@@ -1,8 +1,17 @@
 const { Client, Events, GatewayIntentBits, Collection, ActivityType  } = require('discord.js');
+const axiosClient = require('./axiosClient')
 const path = require('path')
 const fs = require('fs')
 
-const PREFIX = '!'
+const fetchServerConfig = async (serverGuildId) => {
+    try {
+        const response = await axiosClient.get(`/server/getServerConfig?serverGuildId=${serverGuildId}`)
+        return response.data.config
+    } catch (err) {
+        console.error('Error fetching server config:', err)
+        return null
+    }
+}
 
 const client = new Client({
     intents: [
@@ -46,13 +55,15 @@ client.on(Events.ClientReady, readyClient => {
 
 // Slash command handler
 client.on(Events.InteractionCreate, async interaction => {
-    if (!interaction.isChatInputCommand()) return
+    if (!interaction.isChatInputCommand() || !interaction.guild) return
 
     const command = client.slashCommands.get(interaction.commandName)
     if (!command) return
 
+    const config = await fetchServerConfig(interaction.guild.id)
+
     try {
-        await command.execute(interaction)
+        await command.execute(interaction, config)
     } catch (error) {
         console.error(error)
         await interaction.reply({ content: 'Hubo un error al ejecutar el comando.', ephemeral: true })
@@ -61,8 +72,16 @@ client.on(Events.InteractionCreate, async interaction => {
 
 // Prefixed command handler
 client.on(Events.MessageCreate, message => {
-    if (message.author.bot || !message.content.startsWith(PREFIX)) return
+    if (message.author.bot || !message.guild) return
+    
+    const config = fetchServerConfig(message.guild.id)
 
+    if (!config) return
+
+    const PREFIX = config.prefix
+
+    if (!message.content.startsWith(PREFIX)) return
+    
     const args = message.content.slice(PREFIX.length).trim().split(/ +/)
     const commandName = args.shift().toLowerCase()
 
@@ -70,7 +89,7 @@ client.on(Events.MessageCreate, message => {
     if (!command) return
 
     try {
-        command.run(client, message, args)
+        command.run(client, message, args, config)
     } catch (error) {
         console.error(error)
         message.channel.send('Hubo un error al ejecutar el comando.')
