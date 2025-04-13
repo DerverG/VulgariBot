@@ -1,7 +1,8 @@
-const databaseConfig = require('./config/database');
+const databaseConfig = require('./config/database')
+const client = require('./config/botconfig')
 const express = require('express')
 const mongoose = require('mongoose')
-const cors =  require('cors')
+const cors = require('cors')
 require('dotenv').config()
 
 const app = express()
@@ -15,7 +16,17 @@ app.use(cors(
     }
 ))
 
+
 app.use(express.json())
+
+// Discord Bot Connection
+client.login(process.env.DISCORD_TOKEN)
+    .then(() => {
+        console.log('Bot successfully connected.')
+    })
+    .catch(err => {
+        console.error('Error logging in:', err)
+    })
 
 // MongoDB Connection
 databaseConfig()
@@ -27,5 +38,5 @@ databaseConfig()
 const SERVER_PORT = process.env.SERVER_PORT
 
 app.listen(SERVER_PORT, () => {
-    console.log(`Servidor corriendo en el puerto ${SERVER_PORT}`)
+    console.log(`Server running on port ${SERVER_PORT}`)
 })
