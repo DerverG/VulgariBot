@@ -1,9 +1,8 @@
 const mongoose = require('mongoose')
 
 const serverSchema = new mongoose.Schema({
-    _id: { type: mongoose.Schema.Types.ObjectId },
-    serverName: { type: String, required: true },
     serverGuildId: { type: String, required: true, unique: true },
+    serverName: { type: String, required: true },
     serverPrefix: { type: String, required: true, default: '!' },
     modules: {
         vulgarity: {
@@ -19,7 +18,7 @@ const serverSchema = new mongoose.Schema({
             ]
         },
         welcomeMessage: {
-            enabled: { type: Boolean, required: true, default: true },
+            enabled: { type: Boolean, required: true, default: false },
             welcomeChannelID: { type: String, required: false },
             welcomeMessage: { type: String, required: false },
             welcomeTitle: { type: String, required: false },
@@ -28,7 +27,7 @@ const serverSchema = new mongoose.Schema({
             welcomeImage: { type: String, required: false },
         },
         goodbyeMessage: {
-            enabled: { type: Boolean, required: true, default: true },
+            enabled: { type: Boolean, required: true, default: false },
             goodbyeChannelID: { type: String, required: false },
             goodbyeMessage: { type: String, required: false },
             goodbyeTitle: { type: String, required: false },
@@ -37,7 +36,7 @@ const serverSchema = new mongoose.Schema({
             goodbyeImage: { type: String, required: false },
         },
         logsChannel: {
-            enabled: { type: Boolean, required: true, default: true },
+            enabled: { type: Boolean, required: true, default: false },
             logsChannelID: { type: String, required: false },
             ignoredChannels: [
                 { channelID: { type: String, required: true } }

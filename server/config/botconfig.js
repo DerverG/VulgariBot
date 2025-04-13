@@ -53,6 +53,25 @@ client.on(Events.ClientReady, readyClient => {
     })
 })
 
+// Config Guild creation
+client.on(Events.GuildCreate, async guild => {
+    const serverGuildId = guild.id
+    const serverName = guild.name
+    const serverPrefix = '!' // Default prefix
+
+    try {
+        await axiosClient.post('/server/setup', {
+            serverGuildId,
+            serverName,
+            serverPrefix,
+        })
+        console.log(`Server configuration created for ${serverName}, ID: ${serverGuildId}`)
+    } catch (err) {
+        console.error('Error creating server configuration:', err)
+    }
+})
+
+
 // Slash command handler
 client.on(Events.InteractionCreate, async interaction => {
     if (!interaction.isChatInputCommand() || !interaction.guild) return

@@ -1,5 +1,23 @@
 const Server = require('../schemas/serverSchema');
 
+const setup = async (req, res) => {
+    try {
+        const { serverGuildId, serverName, serverPrefix } = req.body
+
+        // Verificar si hay un ID de servidor
+        if (!serverGuildId) return res.status(400).json({ message: 'Server ID is required' })
+
+        // Crear configuracion del servidor
+        const config = new Server({ serverGuildId, serverName, serverPrefix })
+        await config.save()
+
+        return res.status(200).json({ message: 'Server configuration created', config })
+    } catch (err) {
+        console.error(err)
+        return res.status(500).json({ message: 'Internal server error' })
+    }
+}
+
 const getServerConfig = async (req, res) => {
     try {
         const { serverGuildId } = req.query
@@ -19,5 +37,6 @@ const getServerConfig = async (req, res) => {
 }
 
 module.exports = {
+    setup,
     getServerConfig,
 }
