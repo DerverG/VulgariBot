@@ -7,6 +7,12 @@ const setup = async (req, res) => {
         // Verificar si hay un ID de servidor
         if (!serverGuildId) return res.status(400).json({ message: 'Server ID is required' })
 
+        // Si ya existe un documento, borrar y crear uno nuevo
+        const serverExists = await Server.findOne({ serverGuildId })
+        if (serverExists) {
+            await Server.deleteOne({ serverGuildId })
+        }
+
         // Crear configuracion del servidor
         const config = new Server({ serverGuildId, serverName, serverPrefix })
         await config.save()

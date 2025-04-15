@@ -5,7 +5,9 @@ const fs = require('fs')
 
 const fetchServerConfig = async (serverGuildId) => {
     try {
-        const response = await axiosClient.get(`/server/getServerConfig?serverGuildId=${serverGuildId}`)
+        const response = await axiosClient.get(`/server/getServerConfig`, {
+            params: { serverGuildId }
+        })
         return response.data.config
     } catch (err) {
         console.error('Error fetching server config:', err)
@@ -90,14 +92,14 @@ client.on(Events.InteractionCreate, async interaction => {
 })
 
 // Prefixed command handler
-client.on(Events.MessageCreate, message => {
+client.on(Events.MessageCreate, async (message) => {
     if (message.author.bot || !message.guild) return
     
-    const config = fetchServerConfig(message.guild.id)
+    const config = await fetchServerConfig(message.guild.id)
 
     if (!config) return
 
-    const PREFIX = config.prefix
+    const PREFIX = config.serverPrefix
 
     if (!message.content.startsWith(PREFIX)) return
     

@@ -7,6 +7,7 @@ const serverSchema = new mongoose.Schema({
     modules: {
         vulgarity: {
             enabled: { type: Boolean, required: true, default: true },
+            allowMentions: { type: Boolean, required: true, default: true },
             disabledChannels: [
                 { channelID: { type: String, required: true } }
             ],
@@ -45,7 +46,10 @@ const serverSchema = new mongoose.Schema({
         autoResponse: {
             enabled: { type: Boolean, default: false },
             responses: [
-                { keyword: { type: String, required: true }, responseMessage: { type: String, required: true } }
+                {
+                    keyword: { type: String, required: true },
+                    responseMessage: { type: String, required: true }
+                }
             ]
         },
     },
