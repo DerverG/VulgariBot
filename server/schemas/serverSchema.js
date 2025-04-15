@@ -2,7 +2,6 @@ const mongoose = require('mongoose')
 
 const serverSchema = new mongoose.Schema({
     serverGuildId: { type: String, required: true, unique: true },
-    serverName: { type: String, required: true },
     serverPrefix: { type: String, required: true, default: '!' },
     modules: {
         vulgarity: {
@@ -20,21 +19,31 @@ const serverSchema = new mongoose.Schema({
         },
         welcomeMessage: {
             enabled: { type: Boolean, required: true, default: false },
-            welcomeChannelID: { type: String, required: false },
-            welcomeMessage: { type: String, required: false },
-            welcomeTitle: { type: String, required: false },
-            welcomeDescription: { type: String, required: false },
-            welcomeColor: { type: String, required: false, default: '#58b9ff' },
-            welcomeImage: { type: String, required: false },
+            channelID: { type: String, required: false },
+            message: { type: String, required: false },
+            messageEmbed: {
+                enabled: { type: Boolean, required: true, default: false },
+                title: { type: String, required: false },
+                description: { type: String, required: false },
+                color: { type: String, required: false, default: '#58b9ff' },
+                image: { type: String, required: false },
+                thumbnailURL: { type: String, required: false },
+                footerText: { type: String, required: false },
+            }
         },
         goodbyeMessage: {
             enabled: { type: Boolean, required: true, default: false },
-            goodbyeChannelID: { type: String, required: false },
-            goodbyeMessage: { type: String, required: false },
-            goodbyeTitle: { type: String, required: false },
-            goodbyeDescription: { type: String, required: false },
-            goodbyeColor: { type: String, required: false, default: '#58b9ff' },
-            goodbyeImage: { type: String, required: false },
+            channelID: { type: String, required: false },
+            meessage: { type: String, required: false },
+            messageEmbed: {
+                enabled: { type: Boolean, required: true, default: false },
+                title: { type: String, required: false },
+                description: { type: String, required: false },
+                color: { type: String, required: false, default: '#58b9ff' },
+                image: { type: String, required: false },
+                thumbnailURL: { type: String, required: false },
+                footerText: { type: String, required: false },
+            },
         },
         logsChannel: {
             enabled: { type: Boolean, required: true, default: false },
