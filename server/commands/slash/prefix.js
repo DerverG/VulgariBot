@@ -1,5 +1,5 @@
 const { SlashCommandBuilder, PermissionsBitField } = require('discord.js')
-const axiosClient = require('../../config/axiosClient')
+const axiosClient = require('../../api/axiosClient')
 
 module.exports = {
     data: new SlashCommandBuilder()
