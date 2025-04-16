@@ -17,20 +17,6 @@ const serverSchema = new mongoose.Schema({
                 { roleID: { type: String, required: true } }
             ]
         },
-        welcomeMessage: {
-            enabled: { type: Boolean, required: true, default: false },
-            channelID: { type: String, required: false },
-            message: { type: String, required: false },
-            messageEmbed: {
-                enabled: { type: Boolean, required: true, default: false },
-                title: { type: String, required: false },
-                description: { type: String, required: false },
-                color: { type: String, required: false, default: '#58b9ff' },
-                image: { type: String, required: false },
-                thumbnailURL: { type: String, required: false },
-                footerText: { type: String, required: false },
-            }
-        },
         goodbyeMessage: {
             enabled: { type: Boolean, required: true, default: false },
             channelID: { type: String, required: false },
