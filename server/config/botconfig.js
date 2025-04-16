@@ -23,15 +23,15 @@ client.on(Events.ClientReady, readyClient => {
 })
 
 // Config Guild creation
-require('../events/GuildCreate')(client)
+require('../events/guildCreate')(client)
 
 // Slash command handler
-require('../events/InteractionCreate')(client)
+require('../events/interactionCreate')(client)
 
 // Prefix command handler
-require('../events/MessageCreate')(client)
+require('../events/messageCreate')(client)
 
 // Welcome message handler
-require('../events/WelcomeMessage')(client)
+require('../events/welcomeMessage')(client)
 
 module.exports = client
