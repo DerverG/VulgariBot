@@ -34,10 +34,18 @@ databaseConfig()
 // Import Routes
 const wordRoutes = require('./routes/wordRoutes')
 const serverRoutes = require('./routes/serverRoutes')
+const responseRoutes = require('./routes/responseRoutes')
+const welcomeRoutes = require('./routes/welcomeRoutes')
+const goodbyeRoutes = require('./routes/goodbyeRoutes')
 
 // Routes
 app.use('/api/word', wordRoutes)
 app.use('/api/server', serverRoutes)
+
+// Under development
+app.use('/api/response', responseRoutes)
+app.use('/api/welcome', welcomeRoutes)
+app.use('/api/goodbye', goodbyeRoutes)
 
 
 const SERVER_PORT = process.env.SERVER_PORT

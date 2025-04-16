@@ -1,6 +1,6 @@
 const mongoose = require('mongoose')
 
-const welcomeSchema = new mongoose.Schema({
+const goodbyeSchema = new mongoose.Schema({
     serverGuildId: { type: String, required: true, unique: true },
     enabled: { type: Boolean, required: true, default: false },
     channelID: { type: String, required: true },
@@ -16,6 +16,6 @@ const welcomeSchema = new mongoose.Schema({
     }
 })
 
-const Welcome = mongoose.model('Welcome', welcomeSchema)
+const Goodbye = mongoose.model('Goodbye', goodbyeSchema)
 
-module.exports = Welcome
+module.exports =  Goodbye
