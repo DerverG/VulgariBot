@@ -1,4 +1,5 @@
-const Server = require('../schemas/serverSchema');
+const Server = require('../schemas/serverSchema')
+const flattenObject = require('../utils/flattenObject')
 
 const setup = async (req, res) => {
     try {
@@ -49,21 +50,6 @@ const updateServerConfig = async (req, res) => {
 
         if (!serverGuildId) {
             return res.status(400).json({ message: 'Server ID is required' })
-        }
-
-        // Función para convertir objetos en dot notation
-        const flattenObject = (obj, prefix = '', res = {}) => {
-            for (const key of Object.keys(obj)) {
-                const value = obj[key]
-                const newKey = prefix ? `${prefix}.${key}` : key
-
-                if (typeof value === 'object' && !Array.isArray(value) && value !== null) {
-                    flattenObject(value, newKey, res)
-                } else {
-                    res[newKey] = value
-                }
-            }
-            return res
         }
 
         // Convertir actualizaciones a dot notation para evitar sobreescritura total
