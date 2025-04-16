@@ -1,8 +1,4 @@
 const { Client, Events, GatewayIntentBits, Collection, ActivityType  } = require('discord.js');
-const path = require('path')
-const fs = require('fs')
-
-const PREFIX = '!'
 
 const client = new Client({
     intents: [
@@ -10,24 +6,6 @@ const client = new Client({
         GatewayIntentBits.GuildMessages,
         GatewayIntentBits.MessageContent,
     ],
-})
-
-// Colecciones para comandos
-client.slashCommands = new Collection()
-client.prefixCommands = new Collection()
-
-// Cargar Slash Commands
-const slashPath = path.join(__dirname, '../commands/slash')
-fs.readdirSync(slashPath).forEach(file => {
-    const command = require(`../commands/slash/${file}`)
-    client.slashCommands.set(command.data.name, command)
-})
-
-// Cargar Prefix Commands
-const prefixPath = path.join(__dirname, '../commands/prefix')
-fs.readdirSync(prefixPath).forEach(file => {
-    const command = require(`../commands/prefix/${file}`)
-    client.prefixCommands.set(command.name, command)
 })
 
 client.on(Events.ClientReady, readyClient => {
@@ -44,37 +22,16 @@ client.on(Events.ClientReady, readyClient => {
     })
 })
 
+// Config Guild creation
+require('../events/guildCreate')(client)
+
 // Slash command handler
-client.on(Events.InteractionCreate, async interaction => {
-    if (!interaction.isChatInputCommand()) return
+require('../events/interactionCreate')(client)
 
-    const command = client.slashCommands.get(interaction.commandName)
-    if (!command) return
+// Prefix command handler
+require('../events/messageCreate')(client)
 
-    try {
-        await command.execute(interaction)
-    } catch (error) {
-        console.error(error)
-        await interaction.reply({ content: 'Hubo un error al ejecutar el comando.', ephemeral: true })
-    }
-})
-
-// Prefixed command handler
-client.on(Events.MessageCreate, message => {
-    if (message.author.bot || !message.content.startsWith(PREFIX)) return
-
-    const args = message.content.slice(PREFIX.length).trim().split(/ +/)
-    const commandName = args.shift().toLowerCase()
-
-    const command = client.prefixCommands.get(commandName)
-    if (!command) return
-
-    try {
-        command.run(client, message, args)
-    } catch (error) {
-        console.error(error)
-        message.channel.send('Hubo un error al ejecutar el comando.')
-    }
-})
+// Welcome message handler
+require('../events/welcomeMessage')(client)
 
 module.exports = client
