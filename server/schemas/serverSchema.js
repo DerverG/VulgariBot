@@ -24,6 +24,10 @@ const serverSchema = new mongoose.Schema({
                 { channelID: { type: String, required: true } }
             ]
         },
+        welcomeMessage: {
+            enabled: { type: Boolean, required: true, default: false },
+            welcomeMessageChannelID: { type: String, required: false },
+        }
     },
 })
 

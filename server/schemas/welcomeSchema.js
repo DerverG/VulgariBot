@@ -2,8 +2,6 @@ const mongoose = require('mongoose')
 
 const welcomeSchema = new mongoose.Schema({
     serverGuildId: { type: String, required: true, unique: true },
-    enabled: { type: Boolean, required: true, default: false },
-    channelID: { type: String, required: true },
     message: { type: String, required: false },
     messageEmbed: {
         enabled: { type: Boolean, required: true, default: false },
