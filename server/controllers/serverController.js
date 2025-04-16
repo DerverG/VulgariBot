@@ -47,13 +47,34 @@ const updateServerConfig = async (req, res) => {
     try {
         const { serverGuildId, configUpdates } = req.body
 
-        // Verificar si hay un ID de servidor
-        if (!serverGuildId) return res.status(400).json({ message: 'Server ID is required' })
+        if (!serverGuildId) {
+            return res.status(400).json({ message: 'Server ID is required' })
+        }
 
-        // Buscar configuracion del servidor
-        const config = await Server.findOneAndUpdate({ serverGuildId }, configUpdates, { new: true })
+        // Función para convertir objetos en dot notation
+        const flattenObject = (obj, prefix = '', res = {}) => {
+            for (const key of Object.keys(obj)) {
+                const value = obj[key]
+                const newKey = prefix ? `${prefix}.${key}` : key
 
-        // Regresar configuracion actualizada del servidor
+                if (typeof value === 'object' && !Array.isArray(value) && value !== null) {
+                    flattenObject(value, newKey, res)
+                } else {
+                    res[newKey] = value
+                }
+            }
+            return res
+        }
+
+        // Convertir actualizaciones a dot notation para evitar sobreescritura total
+        const flattenedUpdates = flattenObject(configUpdates)
+
+        const config = await Server.findOneAndUpdate(
+            { serverGuildId },
+            { $set: flattenedUpdates },
+            { new: true }
+        )
+
         return res.status(200).json({ message: 'Server configuration updated', config })
     } catch (err) {
         console.error(err)
