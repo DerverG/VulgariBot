@@ -26,7 +26,7 @@ const serverSchema = new mongoose.Schema({
         },
         welcomeMessage: {
             enabled: { type: Boolean, required: true, default: false },
-            welcomeMessageChannelID: { type: String, required: false },
+            welcomeMessageChannelID: { type: String, required: false, default: null},
         }
     },
 })
